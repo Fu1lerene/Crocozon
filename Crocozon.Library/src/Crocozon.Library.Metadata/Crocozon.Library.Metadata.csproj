@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crocozon.Library.Exceptions\Crocozon.Library.Exceptions.csproj" />
+    </ItemGroup>
+
+</Project>

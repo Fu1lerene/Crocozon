@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.Domain\Crocozon.Library.Domain.csproj" />
+      <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.ValueObjects\Crocozon.Library.ValueObjects.csproj" />
+      <ProjectReference Include="..\Crocozon.Services.ItemsData.Domain.Events\Crocozon.Services.ItemsData.Domain.Events.csproj" />
+    </ItemGroup>
+
+</Project>

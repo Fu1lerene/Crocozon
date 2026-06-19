@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.ValueObjects\Crocozon.Library.ValueObjects.csproj" />
+    </ItemGroup>
+
+</Project>

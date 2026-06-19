@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="Npgsql" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crocozon.Library.EventStore.Abstractions\Crocozon.Library.EventStore.Abstractions.csproj" />
+      <ProjectReference Include="..\Crocozon.Library.Extensions.Postgres\Crocozon.Library.Extensions.Postgres.csproj" />
+    </ItemGroup>
+
+</Project>

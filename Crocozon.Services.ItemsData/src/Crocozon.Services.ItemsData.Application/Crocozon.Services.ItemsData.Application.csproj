@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.EventStore.Abstractions\Crocozon.Library.EventStore.Abstractions.csproj" />
+      <ProjectReference Include="..\Crocozon.Services.ItemsData.Domain\Crocozon.Services.ItemsData.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" />
+      <PackageReference Include="MediatR.Contracts" />
+    </ItemGroup>
+
+</Project>

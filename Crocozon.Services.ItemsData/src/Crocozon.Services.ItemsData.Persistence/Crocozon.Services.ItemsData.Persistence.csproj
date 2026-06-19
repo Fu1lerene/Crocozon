@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <PackageReference Include="Npgsql" />
+      <PackageReference Include="Dapper" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crocozon.Services.ItemsData.Application\Crocozon.Services.ItemsData.Application.csproj" />
+    </ItemGroup>
+
+</Project>

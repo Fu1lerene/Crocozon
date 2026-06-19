@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="Google.Api.CommonProtos" GeneratePathProperty="true"/>
+        <PackageReference Include="Grpc.Tools" >
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.EventStore.Abstractions\Crocozon.Library.EventStore.Abstractions.csproj" />
+      <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.EventStore.Protobuf\Crocozon.Library.EventStore.Protobuf.csproj" />
+      <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.Extensions.Protobuf\Crocozon.Library.Extensions.Protobuf.csproj" />
+      <ProjectReference Include="..\Crocozon.Services.ItemsData.Domain.Events\Crocozon.Services.ItemsData.Domain.Events.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Protos/events.proto" GrpcServices="None" AdditionalImportDirs="$(PkgGoogle_Api_CommonProtos)/content/protos" />
+    </ItemGroup>
+
+</Project>

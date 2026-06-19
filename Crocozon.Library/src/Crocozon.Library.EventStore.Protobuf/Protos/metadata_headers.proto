@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package crocozon.library.event_tore;
+option csharp_namespace = "Crocozon.Library.EventStore.Proto";
+
+message EventMetadataProto {
+  repeated MetadataHeaderProto metadata_headers = 1;
+}
+
+message MetadataHeaderProto {
+  string key = 1;
+  bytes value = 2;
+}

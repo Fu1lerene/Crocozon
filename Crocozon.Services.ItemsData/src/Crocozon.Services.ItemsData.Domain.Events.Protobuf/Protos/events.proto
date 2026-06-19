@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package crocozon.services.items_data.domain.events;
+option csharp_namespace = "Crocozon.Services.ItemsData.Domain.Events";
+
+import "google/type/money.proto";
+
+message ItemCreatedProto {
+  int64 item_id = 1;
+  string name = 2;
+  google.type.Money base_price = 3;
+}
+
+message ItemNameChangedProto {
+  int64 item_id = 1;
+  string name = 2;
+}

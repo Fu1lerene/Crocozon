@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+      <RootNamespace>Crocozon.Library.EventStore.Proto</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crocozon.Library.EventStore.Abstractions\Crocozon.Library.EventStore.Abstractions.csproj" />
+      <ProjectReference Include="..\Crocozon.Library.ValueObjects\Crocozon.Library.ValueObjects.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Google.Api.CommonProtos" />
+      <PackageReference Include="Google.Protobuf" />
+      <PackageReference Include="Grpc.Tools" >
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Protobuf Include="Protos/metadata_headers.proto" GrpcServices="None" />
+    </ItemGroup>
+    
+</Project>

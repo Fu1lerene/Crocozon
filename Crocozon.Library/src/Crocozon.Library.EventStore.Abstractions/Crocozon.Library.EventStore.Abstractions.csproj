@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crocozon.Library.Domain.Abstractions\Crocozon.Library.Domain.Abstractions.csproj" />
+      <ProjectReference Include="..\Crocozon.Library.Metadata\Crocozon.Library.Metadata.csproj" />
+    </ItemGroup>
+
+</Project>

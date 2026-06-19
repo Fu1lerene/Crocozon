@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package crocozon.services.items_data.grpc;
+option csharp_namespace = "Crocozon.Services.ItemsData.Grpc";
+
+import "google/type/money.proto";
+import "google/protobuf/empty.proto";
+
+service ItemsProvider {
+  rpc CreateItems(CreateItemsRequest) returns (google.protobuf.Empty) {}
+  rpc RenameItems(RenameItemsRequest) returns (google.protobuf.Empty) {}
+  rpc GetItems(GetItemsRequest) returns (GetItemsResponse) {}
+}
+
+message CreateItemsRequest {
+  repeated ItemDataProto items = 1;
+}
+
+message RenameItemsRequest {
+  repeated ItemNameProto item_names = 1;
+}
+
+message ItemNameProto {
+  int64 item_id = 1;
+  string name = 2;
+}
+
+message GetItemsRequest {
+  repeated int64 item_ids = 1;
+}
+
+message GetItemsResponse {
+  repeated ItemDataProto items = 1;
+}
+
+message ItemDataProto {
+  int64 item_id = 1;
+  string name = 2;
+  google.type.Money base_price = 3;
+}

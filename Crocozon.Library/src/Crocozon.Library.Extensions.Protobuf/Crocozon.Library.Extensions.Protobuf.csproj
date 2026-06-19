@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Google.Api.CommonProtos" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Crocozon.Library.ValueObjects\Crocozon.Library.ValueObjects.csproj" />
+  </ItemGroup>
+</Project>
