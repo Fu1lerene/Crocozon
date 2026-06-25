@@ -1,4 +1,5 @@
 using Crocozon.Library.EventStore.Abstractions;
+using Crocozon.Library.ValueObjects;
 using Crocozon.Services.ItemsData.Application.Infrastructure;
 using Crocozon.Services.ItemsData.Domain.Aggregates;
 using Crocozon.Services.ItemsData.Domain.Events.ValueObjects;
@@ -11,16 +12,16 @@ public class CreateItemsHandler(IRepository<Item, ItemDataItemId> repository, II
 {
     public async Task Handle(CreateItemsCommand command, CancellationToken cancellationToken)
     {
-        foreach (var i in command.Items)
-        {
-            var item = await repository.GetAsync(i.ItemId, cancellationToken);
-            if (item is not null)
-                continue;
-        
-            var newItem = new Item(i.ItemId, new ItemName(i.Name), i.BasePrice);
-
-            await repository.SaveAsync(newItem, cancellationToken);
-        }
-        await itemsDataStore.CreateItems(command, cancellationToken);
+        // var newItems = new List<Item>();
+        // var items = repository.GetAsync([.. command.Items.Select(x => new ItemDataItemId(x.ItemId))], cancellationToken);
+        // await foreach (var (id, aggregate) in items)
+        // {
+        //     if (aggregate is not null)
+        //         continue;
+        //     
+        //     newItems.Add(new Item(id, new ItemName("biba"), Money.Zero));
+        // }
+        // await repository.SaveAsync(newItems, cancellationToken);
+        // await itemsDataStore.CreateItems(command, cancellationToken);
     }
 }

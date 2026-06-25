@@ -5,16 +5,34 @@ namespace Crocozon.Library.EventStore.Postgres;
 
 public class EventWriter(NpgsqlDataSource dataSource) : IEventWriter
 {
-    public async Task WriteAsync(Guid aggregateId, long expectedVersion, IReadOnlyCollection<EventData> events, CancellationToken cancellationToken)
+    private const string CopyFromCommand = 
+        "copy domain.events (aggregate_id, version, event_type, payload, metadata) from stdin (format binary)";
+    
+    public async Task WriteAsync(EventsDataWriteRequest request, CancellationToken cancellationToken)
     {
-        var version = expectedVersion - events.Count;
-
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
 
         try
         {
-            await WriteEventsAsync(connection, aggregateId, version, events, cancellationToken);
+            await BinaryWriteEventsAsync(request, connection, cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch (Exception)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
+    }
+    
+    public async Task WriteAsync(IReadOnlyCollection<EventsDataWriteRequest> requests, CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+
+        try
+        {
+            await BinaryWriteEventsAsync(requests, connection, cancellationToken);
             await transaction.CommitAsync(cancellationToken);
         }
         catch (Exception)
@@ -24,13 +42,35 @@ public class EventWriter(NpgsqlDataSource dataSource) : IEventWriter
         }
     }
 
-    private static async Task WriteEventsAsync(NpgsqlConnection connection, Guid aggregateId, long version, IReadOnlyCollection<EventData> events,
+    private static async Task BinaryWriteEventsAsync(EventsDataWriteRequest request, NpgsqlConnection connection,
         CancellationToken cancellationToken)
     {
-        var copyFromCommand = @"
-copy domain.events (aggregate_id, version, event_type, payload, metadata) from stdin (format binary)";
-        await using var binaryWriter = await connection.BeginBinaryImportAsync(copyFromCommand, cancellationToken);
+        var events = request.Events;
+        var version = request.ExpectedVersion - events.Count;
+
+        await using var binaryWriter = await connection.BeginBinaryImportAsync(CopyFromCommand, cancellationToken);
         
+        await WriteAsync(request.AggregateId, version, events, binaryWriter, cancellationToken);
+        await binaryWriter.CompleteAsync(cancellationToken);
+    }
+    
+    private static async Task BinaryWriteEventsAsync(IReadOnlyCollection<EventsDataWriteRequest> requests, NpgsqlConnection connection,
+        CancellationToken cancellationToken)
+    {
+        await using var binaryWriter = await connection.BeginBinaryImportAsync(CopyFromCommand, cancellationToken);
+
+        foreach (var (aggregateId, expectedVersion, events) in requests)
+        {
+            var version = expectedVersion - events.Count;
+
+            await WriteAsync(aggregateId, version, events, binaryWriter, cancellationToken);
+        }
+        await binaryWriter.CompleteAsync(cancellationToken);
+    }
+
+    private static async Task WriteAsync(Guid aggregateId, long version, IReadOnlyCollection<EventData> events,
+        NpgsqlBinaryImporter binaryWriter, CancellationToken cancellationToken)
+    {
         foreach (var @event in events)
         {
             await binaryWriter.StartRowAsync(cancellationToken);
@@ -40,6 +80,5 @@ copy domain.events (aggregate_id, version, event_type, payload, metadata) from s
             await binaryWriter.WriteAsync(@event.Data, cancellationToken);
             await binaryWriter.WriteAsync(@event.Metadata, cancellationToken);
         }
-        await binaryWriter.CompleteAsync(cancellationToken);
     }
 }
