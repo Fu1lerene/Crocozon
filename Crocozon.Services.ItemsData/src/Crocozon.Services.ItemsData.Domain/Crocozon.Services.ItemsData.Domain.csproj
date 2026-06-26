@@ -2,6 +2,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.Domain\Crocozon.Library.Domain.csproj" />
+      <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.EventStore.Abstractions\Crocozon.Library.EventStore.Abstractions.csproj" />
       <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.ValueObjects\Crocozon.Library.ValueObjects.csproj" />
       <ProjectReference Include="..\Crocozon.Services.ItemsData.Domain.Events\Crocozon.Services.ItemsData.Domain.Events.csproj" />
     </ItemGroup>

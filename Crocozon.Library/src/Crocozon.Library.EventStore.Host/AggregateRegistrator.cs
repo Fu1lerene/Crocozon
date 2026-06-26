@@ -1,7 +1,9 @@
 ﻿using Crocozon.Library.Domain.Abstractions;
 using Crocozon.Library.EventStore.Abstractions;
+using Crocozon.Library.EventStore.Abstractions.Processing;
 using Crocozon.Library.EventStore.Persistence;
 using Crocozon.Library.EventStore.Postgres;
+using Crocozon.Library.EventStore.Processing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crocozon.Library.EventStore.Host;
@@ -23,6 +25,10 @@ public static class AggregateRegistrator
         where TAggregate : IAggregate<TId>
         where TId : IAggregateId
     {
-        return services.AddScoped<IRepository<TAggregate, TId>, Repository<TAggregate, TId>>();
+        services
+            .AddScoped<IAggregateProcessor<TAggregate, TId>, AggregateProcessor<TAggregate, TId>>()
+            .AddScoped<IRepository<TAggregate, TId>, Repository<TAggregate, TId>>();
+        
+        return services;
     }
 }

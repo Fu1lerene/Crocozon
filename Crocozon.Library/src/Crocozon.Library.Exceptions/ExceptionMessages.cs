@@ -11,4 +11,5 @@ public static class ExceptionMessages
     public static string DescriptorNotFound(string protoTypeFullName) => $"Protobuf message descriptor for type '{protoTypeFullName}' was not found in the provided descriptors list. Ensure that this proto message has been registered for deserializer.";
     public static string DomainEventAlreadyMapped(string domainTypeName) => $"Mapping for domain event type '{domainTypeName}' has already been registered.";
     public static string ProtoMessageAlreadyMapped(string descriptorFullName) => $"Protobuf message with full name '{descriptorFullName}' has already been mapped to a domain event.";
+    public static string AggregateNotFound(string aggregateName, Guid id) => $"Aggregate {aggregateName} with id {id} not found.";
 }
