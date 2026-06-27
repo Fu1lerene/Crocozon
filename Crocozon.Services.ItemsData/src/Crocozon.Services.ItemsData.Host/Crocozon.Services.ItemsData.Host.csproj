@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.Interceptors\Crocozon.Library.Interceptors.csproj" />
         <ProjectReference Include="..\Crocozon.Services.ItemsData.Domain.Events.Protobuf\Crocozon.Services.ItemsData.Domain.Events.Protobuf.csproj" />
         <ProjectReference Include="..\Crocozon.Services.ItemsData.Domain\Crocozon.Services.ItemsData.Domain.csproj" />
         <ProjectReference Include="..\..\..\Crocozon.Library\src\Crocozon.Library.EventStore.Host\Crocozon.Library.EventStore.Host.csproj" />

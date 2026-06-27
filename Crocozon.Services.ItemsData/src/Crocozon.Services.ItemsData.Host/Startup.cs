@@ -1,10 +1,12 @@
 using Crocozon.Library.EventStore.Host;
+using Crocozon.Library.Interceptors;
 using Crocozon.Library.Options;
 using Crocozon.Services.ItemsData.Application.Commands.CreateItem;
 using Crocozon.Services.ItemsData.Application.Infrastructure;
 using Crocozon.Services.ItemsData.Grpc.Servers;
 using Crocozon.Services.ItemsData.Host.Registrators;
 using Crocozon.Services.ItemsData.Persistence.Stores;
+using FluentValidation;
 
 namespace Crocozon.Services.ItemsData.Host;
 
@@ -23,14 +25,18 @@ public sealed class Startup(IConfiguration configuration)
         Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         services.AddEventStore();
         
-        services.AddGrpc();
+        services.AddGrpc(options =>
+        {
+            options.Interceptors.Add<ExceptionInterceptor>();
+        });
         services.AddGrpcReflection();
 
-        services.AddPipelineBehaviors();
+        services.AddValidatorsFromAssembly(typeof(CreateItemsCommand).Assembly);
 
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(CreateItemsCommand).Assembly);
+            cfg.AddCommonPipelineBehaviors();
         });
         
         services.AddSingleton<IItemsDataStore, ItemsDataStore>();

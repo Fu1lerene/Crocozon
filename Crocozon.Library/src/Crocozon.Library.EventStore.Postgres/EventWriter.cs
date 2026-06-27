@@ -1,4 +1,5 @@
 using Crocozon.Library.EventStore.Abstractions;
+using Crocozon.Library.Exceptions;
 using Npgsql;
 
 namespace Crocozon.Library.EventStore.Postgres;
@@ -13,16 +14,8 @@ public class EventWriter(NpgsqlDataSource dataSource) : IEventWriter
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
 
-        try
-        {
-            await BinaryWriteEventsAsync(request, connection, cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-        }
-        catch (Exception)
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+        await TryWriteAsync(() => BinaryWriteEventsAsync(request, connection, cancellationToken),
+            transaction, cancellationToken);
     }
     
     public async Task WriteAsync(IReadOnlyCollection<EventsDataWriteRequest> requests, CancellationToken cancellationToken)
@@ -30,15 +23,20 @@ public class EventWriter(NpgsqlDataSource dataSource) : IEventWriter
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
 
+        await TryWriteAsync(() => BinaryWriteEventsAsync(requests, connection, cancellationToken),
+            transaction, cancellationToken);
+    }
+    
+    private static async Task TryWriteAsync(Func<Task> write, NpgsqlTransaction transaction, CancellationToken cancellationToken)
+    {
         try
         {
-            await BinaryWriteEventsAsync(requests, connection, cancellationToken);
+            await write();
             await transaction.CommitAsync(cancellationToken);
         }
-        catch (Exception)
+        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
         {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
+            throw new AggregateConcurrencyException(ExceptionMessages.AggregateConcurrencyConflict, ex, ex.Detail);
         }
     }
 

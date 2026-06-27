@@ -37,7 +37,7 @@ public class AggregateProcessingBuilder<TAggregate, TId, TRequest>(
 
     public IAggregateProcessingBuilder<TAggregate, TId, TRequest> ThrowIfNotExists()
     {
-        _missingAction = (id, _) => throw new InvalidOperationException(
+        _missingAction = (id, _) => throw new AggregateNotFoundException(
             ExceptionMessages.AggregateNotFound(typeof(TAggregate).Name, id.Value));
 
         return this;

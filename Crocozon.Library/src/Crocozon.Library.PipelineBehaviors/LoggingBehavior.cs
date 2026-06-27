@@ -8,7 +8,7 @@ namespace Crocozon.Library.PipelineBehaviors;
 
 public class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger, IOptions<LoggingBehaviorOptions> options)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+    where TRequest : notnull
 {
     private readonly LoggingBehaviorOptions _options = options.Value;
     

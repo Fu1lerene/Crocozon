@@ -11,13 +11,13 @@ public static class OptionsRegistrator
         services
             .AddOptions<PostgresOptions>()
             .Bind(configuration.GetSection("PostgresOptions"))
-            .ValidateDataAnnotations()
+            .Validate(x => !string.IsNullOrWhiteSpace(x.ConnectionString), "PostgresOptions.ConnectionString is required.")
             .ValidateOnStart();
         
         services
             .AddOptions<LoggingBehaviorOptions>()
             .Bind(configuration.GetSection("LoggingBehavior"))
-            .ValidateDataAnnotations()
+            .Validate(x => x.SlowRequestThresholdMs > 0, "LoggingBehaviorOptions.SlowRequestThresholdMs must be positive.")
             .ValidateOnStart();
         
         return services;
