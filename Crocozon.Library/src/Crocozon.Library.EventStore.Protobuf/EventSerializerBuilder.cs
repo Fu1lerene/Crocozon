@@ -4,7 +4,7 @@ using Crocozon.Library.Exceptions;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 
-namespace Crocozon.Library.EventStore.Proto;
+namespace Crocozon.Library.EventStore.Protobuf;
 
 public class EventSerializerBuilder(IEnumerable<MessageDescriptor> protoDescriptors)
 {

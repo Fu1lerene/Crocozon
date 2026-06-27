@@ -6,12 +6,12 @@ namespace Crocozon.Library.Domain;
 public abstract class Aggregate<TId> : IAggregate<TId>
     where TId : IAggregateId
 {
-    private readonly List<EventsEnvelope> _uncommitedEvents = [];
+    private readonly List<EventsEnvelope> _uncommittedEvents = [];
     private EventMetadata _eventMetadata = new();
 
     public TId Id { get; }
     public long Version { get; private set; } = -1;
-    public IReadOnlyCollection<EventsEnvelope> UncommitedEvents => _uncommitedEvents.AsReadOnly();
+    public IReadOnlyCollection<EventsEnvelope> UncommittedEvents => _uncommittedEvents.AsReadOnly();
 
     protected Aggregate(TId id)
     {
@@ -20,7 +20,7 @@ public abstract class Aggregate<TId> : IAggregate<TId>
         Id = id;
     }
 
-    public void ClearUncommitedEvents() => _uncommitedEvents.Clear();
+    public void ClearUncommittedEvents() => _uncommittedEvents.Clear();
 
     public void SetEventsMetadata(EventMetadata eventMetadata)
     {
@@ -34,7 +34,7 @@ public abstract class Aggregate<TId> : IAggregate<TId>
     protected void ApplyEvent(IDomainEvent @event)
     {
         Apply(@event);
-        _uncommitedEvents.Add(new EventsEnvelope(@event, _eventMetadata));
+        _uncommittedEvents.Add(new EventsEnvelope(@event, _eventMetadata));
     }
     
     protected void ApplyCommitedEvents(IReadOnlyCollection<IDomainEvent> events)

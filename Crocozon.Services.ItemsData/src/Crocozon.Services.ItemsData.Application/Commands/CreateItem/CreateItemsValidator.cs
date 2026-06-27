@@ -8,7 +8,7 @@ public class CreateItemsValidator : AbstractValidator<CreateItemsCommand>
     public CreateItemsValidator()
     {
         RuleFor(x => x.Items)
-            .Must(items => items.Distinct().Count() == items.Count)
+            .Must(items => items.DistinctBy(x =>x.ItemId).Count() == items.Count)
             .WithMessage(ExceptionMessages.DuplicateItemIdsRequest);
     }
 }

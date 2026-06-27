@@ -9,7 +9,7 @@
       - POSTGRES_USERNAME=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - ASPNETCORE_ENVIRONMENT=Production
-      - PostgresOptions__ConnectionString=Host=items-data-db;Database=items_data;Username=${POSTGRES_PASSWORD};Password=${POSTGRES_PASSWORD}
+      - PostgresOptions__ConnectionString=Host=items-data-db;Database=items_data;Username=${POSTGRES_USERNAME};Password=${POSTGRES_PASSWORD}
       - ASPNETCORE_URLS=http://+:5002
     depends_on:
       - items-data-db

@@ -1,18 +1,18 @@
 ﻿using Crocozon.Library.Domain.Abstractions;
 using Crocozon.Library.EventStore.Abstractions;
-using Crocozon.Library.EventStore.Proto.Extensions;
+using Crocozon.Library.EventStore.Protobuf.Extensions;
 using Crocozon.Library.Exceptions;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 
-namespace Crocozon.Library.EventStore.Proto;
+namespace Crocozon.Library.EventStore.Protobuf;
 
 public class EventSerializer(
     Dictionary<Type, (MessageDescriptor, Func<IDomainEvent, byte[]>)> mapDomainToProto,
     Dictionary<string, Func<byte[], IDomainEvent>> mapProtoToDomain)
     : IEventSerializer
 {
-    private readonly Dictionary<Type, (MessageDescriptor ProtoDesciprot, Func<IDomainEvent, byte[]> ToByteArray)>
+    private readonly Dictionary<Type, (MessageDescriptor ProtoDescriptor, Func<IDomainEvent, byte[]> ToByteArray)>
         _mapDomainToProto = new(mapDomainToProto);
 
     private readonly Dictionary<string, Func<byte[], IDomainEvent>> _mapProtoToDomain = new(mapProtoToDomain);
@@ -30,7 +30,7 @@ public class EventSerializer(
         
         var data = serializer.ToByteArray(@event);
 
-        return new EventData(serializer.ProtoDesciprot.FullName, data, metadata.ToProto().ToByteArray());
+        return new EventData(serializer.ProtoDescriptor.FullName, data, metadata.ToProto().ToByteArray());
     }
 
     public EventsEnvelope Deserialize(string eventType, byte[] data, byte[] metadata)

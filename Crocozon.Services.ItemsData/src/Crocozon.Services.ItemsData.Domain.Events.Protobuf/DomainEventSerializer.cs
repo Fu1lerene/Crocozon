@@ -1,5 +1,5 @@
 using Crocozon.Library.EventStore.Abstractions;
-using Crocozon.Library.EventStore.Proto;
+using Crocozon.Library.EventStore.Protobuf;
 
 namespace Crocozon.Services.ItemsData.Domain.Events.Protobuf;
 

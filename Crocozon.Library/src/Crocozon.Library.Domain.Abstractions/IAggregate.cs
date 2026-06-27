@@ -7,8 +7,8 @@ public interface IAggregate<out TId>
 {
     TId Id { get; }
     long Version { get; }
-    IReadOnlyCollection<EventsEnvelope> UncommitedEvents { get; }
-    void ClearUncommitedEvents();
+    IReadOnlyCollection<EventsEnvelope> UncommittedEvents { get; }
+    void ClearUncommittedEvents();
 
     void SetEventsMetadata(EventMetadata eventMetadata);
 }

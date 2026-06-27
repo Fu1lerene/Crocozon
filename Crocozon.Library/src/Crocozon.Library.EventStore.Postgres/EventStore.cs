@@ -31,32 +31,31 @@ public class EventStore(IEventSerializer serializer, IEventWriter eventWriter, I
     
     public async IAsyncEnumerable<RecordedDomainEvents> ReadEventsAsync(IReadOnlyCollection<Guid> aggregateIds, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var sortedIds = aggregateIds.Distinct().Order().ToArray();
+        var remainingIds = aggregateIds.ToHashSet();
 
-        await foreach (var deserializedEvents in ReadRecordedEventsAsync(sortedIds, cancellationToken)) 
-            yield return deserializedEvents;
-    }
-    
-    private async IAsyncEnumerable<RecordedDomainEvents> ReadRecordedEventsAsync(Guid[] sortedIds, [EnumeratorCancellation] CancellationToken cancellationToken)
-    {
-        await using var enumerator = eventReader.ReadAsync(sortedIds, cancellationToken)
+        await using var enumerator = eventReader.ReadAsync(remainingIds, cancellationToken)
             .GetAsyncEnumerator(cancellationToken);
 
         var hasEvent = await enumerator.MoveNextAsync();
         var currentEvents = new List<RecordedEvent>();
 
-        foreach (var aggregateId in sortedIds)
+        while (hasEvent)
         {
+            var currentId = enumerator.Current.AggregateId;
             currentEvents.Clear();
 
-            while (hasEvent && enumerator.Current.AggregateId == aggregateId)
+            while (hasEvent && enumerator.Current.AggregateId == currentId)
             {
                 currentEvents.Add(enumerator.Current);
                 hasEvent = await enumerator.MoveNextAsync();
             }
 
-            yield return GetDeserializedEvents(aggregateId, currentEvents);
+            remainingIds.Remove(currentId);
+            yield return GetDeserializedEvents(currentId, currentEvents);
         }
+        
+        foreach (var missingId in remainingIds)
+            yield return RecordedDomainEvents.Empty(missingId);
     }
     
     private RecordedDomainEvents GetDeserializedEvents(Guid aggregateId, IReadOnlyCollection<RecordedEvent> events)

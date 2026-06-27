@@ -1,7 +1,8 @@
+using Crocozon.Library.EventStore.Proto;
 using Crocozon.Library.Metadata;
 using Google.Protobuf;
 
-namespace Crocozon.Library.EventStore.Proto.Extensions;
+namespace Crocozon.Library.EventStore.Protobuf.Extensions;
 
 public static class MetadataProtoExtensions
 {

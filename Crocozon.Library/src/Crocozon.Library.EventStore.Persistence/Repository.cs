@@ -14,7 +14,7 @@ public class Repository<TAggregate, TId>(IEventStore eventStore, IAggregateFacto
         var request = GetEventsWriteRequest(aggregate);
         await eventStore.SaveEventsAsync(request, cancellationToken);
 
-        aggregate.ClearUncommitedEvents();
+        aggregate.ClearUncommittedEvents();
     }
 
     public async Task SaveAsync(IReadOnlyCollection<TAggregate> aggregates, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ public class Repository<TAggregate, TId>(IEventStore eventStore, IAggregateFacto
         await eventStore.SaveEventsAsync(requests, cancellationToken);
 
         foreach (var aggregate in aggregates)
-            aggregate.ClearUncommitedEvents();
+            aggregate.ClearUncommittedEvents();
     }
 
     public async Task<TAggregate?> GetAsync(TId id, CancellationToken cancellationToken)
@@ -59,5 +59,5 @@ public class Repository<TAggregate, TId>(IEventStore eventStore, IAggregateFacto
     }
 
     private static EventsWriteRequest GetEventsWriteRequest(TAggregate aggregate)
-        => new(aggregate.Id.Value, aggregate.Version, aggregate.UncommitedEvents);
+        => new(aggregate.Id.Value, aggregate.Version, aggregate.UncommittedEvents);
 }

@@ -54,11 +54,7 @@ public class ItemsDataStore(NpgsqlDataSource datasource) : IItemsDataStore
         const string sql = 
             """
             insert into public.items (item_id, name, base_price, base_price_currency)
-            select * from unnest(@itemIds, @names, @basePrices, @basePricesCurrency)
-            on conflict (item_id) do update 
-                                  set name = excluded.name,
-                                  base_price = excluded.base_price,
-                                  base_price_currency = excluded.base_price_currency;
+            select * from unnest(@itemIds, @names, @basePrices, @basePricesCurrency);
             """;
         
         await connection.ExecuteAsync(sql,
