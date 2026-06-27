@@ -5,10 +5,9 @@ using Crocozon.Services.ItemsData.Domain.Aggregates;
 using Crocozon.Services.ItemsData.Domain.Events.Protobuf;
 using Crocozon.Services.ItemsData.Domain.ValueObjects;
 
+namespace Crocozon.Services.ItemsData.Host.Registrators;
 
-namespace Crocozon.Services.ItemsData.Host.Registrations;
-
-public static class EventStoreRegistration
+public static class EventStoreRegistrator
 {
     public static IServiceCollection AddEventStore(this IServiceCollection services)
     {

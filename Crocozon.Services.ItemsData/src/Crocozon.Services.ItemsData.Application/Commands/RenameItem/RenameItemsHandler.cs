@@ -15,7 +15,7 @@ public class RenameItemsHandler(IAggregateProcessor<Item, ItemDataItemId> proces
             .ThrowIfNotExists()
             .IfExists((item, cmd) => item.RenameItem(new ItemNameValue(cmd.Name)))
             .ExecuteAsync(cancellationToken);
-        
+
         await itemsDataStore.RenameItems(command, cancellationToken); // Temporary, in future saving by kafka
     }
 }

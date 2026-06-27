@@ -35,10 +35,18 @@ public class AggregateProcessingBuilder<TAggregate, TId, TRequest>(
         return this;
     }
 
+    public IAggregateProcessingBuilder<TAggregate, TId, TRequest> ThrowIfNotExists()
+    {
+        _missingAction = (id, _) => throw new InvalidOperationException(
+            ExceptionMessages.AggregateNotFound(typeof(TAggregate).Name, id.Value));
+
+        return this;
+    }
+
     public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         var requestById = requests.ToDictionary(idSelector);
-        var aggregatesToSave = new List<TAggregate>();
+        var aggregatesToSave = new List<TAggregate>(requestById.Count);
         
         await foreach (var (id, aggregate) in repository.GetAsync(requestById.Keys, cancellationToken))
         {
@@ -62,14 +70,6 @@ public class AggregateProcessingBuilder<TAggregate, TId, TRequest>(
 
         if (aggregatesToSave.Count > 0)
             await repository.SaveAsync(aggregatesToSave, cancellationToken);
-    }
-    
-    public IAggregateProcessingBuilder<TAggregate, TId, TRequest> ThrowIfNotExists()
-    {
-        _missingAction = (id, _) => throw new InvalidOperationException(
-            ExceptionMessages.AggregateNotFound(typeof(TAggregate).Name, id.Value));
-
-        return this;
     }
 
     private bool ExecuteMissingFunc(List<TAggregate> aggregatesToSave, TId id, TRequest request)

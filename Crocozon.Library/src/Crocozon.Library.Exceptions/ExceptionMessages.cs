@@ -5,7 +5,8 @@ public static class ExceptionMessages
     public const string ValueCannotBeNegative = "Value cannot be negative.";
     public const string ValueMustBePositive = "Value must be greater than zero.";
     public const string ValueCannotBeNullOrWhitespace = "Value cannot be null or whitespace.";
-    public const string UnknownCurrencyCode = "Unknown currency code";
+    public const string UnknownCurrencyCode = "Unknown currency code.";
+    public const string DuplicateItemIdsRequest = "Request contains duplicate item ids.";
     public static string ItemNameTooLong(short maxLengthName) => $"The item name is too long, it must be less than {maxLengthName} characters.";
     public static string EventTypeNotFound(string eventType) => $"Event type not found: {eventType}.";
     public static string DescriptorNotFound(string protoTypeFullName) => $"Protobuf message descriptor for type '{protoTypeFullName}' was not found in the provided descriptors list. Ensure that this proto message has been registered for deserializer.";

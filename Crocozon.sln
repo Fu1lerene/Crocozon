@@ -71,6 +71,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crocozon.Services.ItemsData
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crocozon.Library.EventStore.Processing", "Crocozon.Library\src\Crocozon.Library.EventStore.Processing\Crocozon.Library.EventStore.Processing.csproj", "{6429470C-FCA4-417E-AA0D-E882674F1CA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crocozon.Library.PipelineBehaviors", "Crocozon.Library\src\Crocozon.Library.PipelineBehaviors\Crocozon.Library.PipelineBehaviors.csproj", "{903A9018-99E5-4686-B377-4091589D63B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crocozon.Library.Options", "Crocozon.Library\src\Crocozon.Library.Options\Crocozon.Library.Options.csproj", "{7C1AFCDE-0E04-4276-8D6E-427DE7939CA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +165,14 @@ Global
 		{6429470C-FCA4-417E-AA0D-E882674F1CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6429470C-FCA4-417E-AA0D-E882674F1CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6429470C-FCA4-417E-AA0D-E882674F1CA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{903A9018-99E5-4686-B377-4091589D63B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903A9018-99E5-4686-B377-4091589D63B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903A9018-99E5-4686-B377-4091589D63B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903A9018-99E5-4686-B377-4091589D63B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C1AFCDE-0E04-4276-8D6E-427DE7939CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C1AFCDE-0E04-4276-8D6E-427DE7939CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C1AFCDE-0E04-4276-8D6E-427DE7939CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C1AFCDE-0E04-4276-8D6E-427DE7939CA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C674B493-8E5C-4D5E-85EF-A55AE69DFCBD} = {380E37B6-8FEC-4C4E-8ABF-51790C2BBF83}
@@ -188,5 +200,7 @@ Global
 		{EB751227-12C8-4B57-AEB1-7AA889C901B0} = {C674B493-8E5C-4D5E-85EF-A55AE69DFCBD}
 		{04291965-ECF4-4BF7-A821-1FD9414D74B2} = {C674B493-8E5C-4D5E-85EF-A55AE69DFCBD}
 		{6429470C-FCA4-417E-AA0D-E882674F1CA8} = {98EB16DE-1122-4A70-B7FA-AF8BAEBD92E3}
+		{903A9018-99E5-4686-B377-4091589D63B1} = {98EB16DE-1122-4A70-B7FA-AF8BAEBD92E3}
+		{7C1AFCDE-0E04-4276-8D6E-427DE7939CA2} = {98EB16DE-1122-4A70-B7FA-AF8BAEBD92E3}
 	EndGlobalSection
 EndGlobal

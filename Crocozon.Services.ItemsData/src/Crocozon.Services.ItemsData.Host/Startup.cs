@@ -1,7 +1,9 @@
+using Crocozon.Library.EventStore.Host;
+using Crocozon.Library.Options;
 using Crocozon.Services.ItemsData.Application.Commands.CreateItem;
 using Crocozon.Services.ItemsData.Application.Infrastructure;
 using Crocozon.Services.ItemsData.Grpc.Servers;
-using Crocozon.Services.ItemsData.Host.Registrations;
+using Crocozon.Services.ItemsData.Host.Registrators;
 using Crocozon.Services.ItemsData.Persistence.Stores;
 
 namespace Crocozon.Services.ItemsData.Host;
@@ -10,10 +12,12 @@ public sealed class Startup(IConfiguration configuration)
 {
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddCommonOptions(configuration);
+
         var connectionString = configuration
             .GetSection("PostgresOptions")
-            .GetValue<string>("ConnectionString")
-            ?? throw new InvalidOperationException("Empty connection string");
+            .Get<PostgresOptions>()!
+            .ConnectionString;
         
         services.AddNpgsqlDataSource(connectionString);
         Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
@@ -21,6 +25,8 @@ public sealed class Startup(IConfiguration configuration)
         
         services.AddGrpc();
         services.AddGrpcReflection();
+
+        services.AddPipelineBehaviors();
 
         services.AddMediatR(cfg =>
         {

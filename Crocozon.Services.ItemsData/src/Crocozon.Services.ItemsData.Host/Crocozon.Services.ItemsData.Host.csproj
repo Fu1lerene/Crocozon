@@ -17,6 +17,7 @@
         <PackageReference Include="Grpc.AspNetCore" />
         <PackageReference Include="Npgsql.DependencyInjection" />
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     </ItemGroup>
 
 </Project>
