@@ -1,5 +1,4 @@
 using Crocozon.Library.EventStore.Host;
-using Crocozon.Library.Interceptors;
 using Crocozon.Library.Options;
 using Crocozon.Services.ItemsData.Application.Commands.CreateItem;
 using Crocozon.Services.ItemsData.Application.Infrastructure;
@@ -27,7 +26,7 @@ public sealed class Startup(IConfiguration configuration)
         
         services.AddGrpc(options =>
         {
-            options.Interceptors.Add<ExceptionInterceptor>();
+            options.AddCommonInterceptors();
         });
         services.AddGrpcReflection();
 

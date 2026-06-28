@@ -1,5 +1,3 @@
-using Crocozon.Library.Metadata;
-
 namespace Crocozon.Library.Domain.Abstractions;
 
 public interface IAggregate<out TId>
@@ -7,8 +5,6 @@ public interface IAggregate<out TId>
 {
     TId Id { get; }
     long Version { get; }
-    IReadOnlyCollection<EventsEnvelope> UncommittedEvents { get; }
+    IReadOnlyCollection<IDomainEvent> UncommittedEvents { get; }
     void ClearUncommittedEvents();
-
-    void SetEventsMetadata(EventMetadata eventMetadata);
 }

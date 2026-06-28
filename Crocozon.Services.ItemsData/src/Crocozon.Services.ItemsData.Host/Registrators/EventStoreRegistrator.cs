@@ -9,12 +9,15 @@ namespace Crocozon.Services.ItemsData.Host.Registrators;
 
 public static class EventStoreRegistrator
 {
+    private const string Source = "items-data";
+
     public static IServiceCollection AddEventStore(this IServiceCollection services)
     {
         services
             .AddEventStore(DomainEventSerializer.Instance)
             .AddSingleton<IAggregateFactory<Item, ItemDataItemId>, ItemDataAggregateFactory>()
-            .AddEventRepository<Item, ItemDataItemId>();
+            .AddEventRepository<Item, ItemDataItemId>()
+            .AddMetadata(Source);
 
         return services;
     }

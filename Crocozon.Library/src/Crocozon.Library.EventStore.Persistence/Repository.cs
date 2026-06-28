@@ -1,10 +1,14 @@
 using System.Runtime.CompilerServices;
 using Crocozon.Library.Domain.Abstractions;
 using Crocozon.Library.EventStore.Abstractions;
+using Crocozon.Library.Metadata;
 
 namespace Crocozon.Library.EventStore.Persistence;
 
-public class Repository<TAggregate, TId>(IEventStore eventStore, IAggregateFactory<TAggregate, TId> factory)
+public class Repository<TAggregate, TId>(
+    IEventStore eventStore,
+    IAggregateFactory<TAggregate, TId> factory,
+    IEventMetadataProvider metadataProvider)
     : IRepository<TAggregate, TId>
     where TAggregate : IAggregate<TId>
     where TId : IAggregateId
@@ -58,6 +62,7 @@ public class Repository<TAggregate, TId>(IEventStore eventStore, IAggregateFacto
         }
     }
 
-    private static EventsWriteRequest GetEventsWriteRequest(TAggregate aggregate)
-        => new(aggregate.Id.Value, aggregate.Version, aggregate.UncommittedEvents);
+    private EventsWriteRequest GetEventsWriteRequest(TAggregate aggregate)
+        => new(aggregate.Id.Value, aggregate.Version,
+            [.. aggregate.UncommittedEvents.Select(@event => new EventsEnvelope(@event, metadataProvider.Create()))]);
 }

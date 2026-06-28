@@ -2,6 +2,7 @@
     
     <ItemGroup>
       <PackageReference Include="Grpc.Core.Api" />
+      <PackageReference Include="Grpc.AspNetCore" />
       <PackageReference Include="Google.Api.CommonProtos" />
       <PackageReference Include="Grpc.StatusProto" />
       <PackageReference Include="FluentValidation" />
@@ -10,6 +11,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Crocozon.Library.Exceptions\Crocozon.Library.Exceptions.csproj" />
+      <ProjectReference Include="..\Crocozon.Library.Metadata\Crocozon.Library.Metadata.csproj" />
     </ItemGroup>
 
 </Project>

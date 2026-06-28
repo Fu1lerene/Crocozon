@@ -11,6 +11,7 @@
       <ProjectReference Include="..\Crocozon.Library.EventStore.Persistence\Crocozon.Library.EventStore.Persistence.csproj" />
       <ProjectReference Include="..\Crocozon.Library.EventStore.Postgres\Crocozon.Library.EventStore.Postgres.csproj" />
       <ProjectReference Include="..\Crocozon.Library.EventStore.Processing\Crocozon.Library.EventStore.Processing.csproj" />
+      <ProjectReference Include="..\Crocozon.Library.Interceptors\Crocozon.Library.Interceptors.csproj" />
       <ProjectReference Include="..\Crocozon.Library.Options\Crocozon.Library.Options.csproj" />
       <ProjectReference Include="..\Crocozon.Library.PipelineBehaviors\Crocozon.Library.PipelineBehaviors.csproj" />
     </ItemGroup>

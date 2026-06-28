@@ -1,6 +1,6 @@
 namespace Crocozon.Library.Exceptions;
 
-public sealed class AggregateConcurrencyException(string message, Exception innerException, string detail) : Exception(message, innerException)
+public sealed class AggregateConcurrencyException(string message, Exception innerException, string? detail) : Exception(message, innerException)
 {
-    public string Detail { get; init; } = detail;
+    public string Detail { get; init; } = detail ?? string.Empty;
 }
