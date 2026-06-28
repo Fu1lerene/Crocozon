@@ -25,24 +25,9 @@ public class ExceptionInterceptor(ILogger<ExceptionInterceptor> logger) : Interc
         }
         catch (ValidationException ex)
         {
-            var violations = ex.Errors.Select(validationError => new BadRequest.Types.FieldViolation
-            {
-                Field = validationError.PropertyName,
-                Description = validationError.ErrorMessage
-            });
-        
-            var badRequest = new BadRequest
-            {
-                FieldViolations = { violations }
-            };
-        
-            var status = new Google.Rpc.Status
-            {
-                Code = (int)StatusCode.InvalidArgument,
-                Message = "Validation failed.",
-                Details = { Google.Protobuf.WellKnownTypes.Any.Pack(badRequest) }
-            };
-        
+            var status = GetValidationStatus(ex);
+
+            logger.LogError(ex, "{Message}", status.Message);
             throw status.ToRpcException();
         }
         catch (AggregateNotFoundException ex)
@@ -51,17 +36,7 @@ public class ExceptionInterceptor(ILogger<ExceptionInterceptor> logger) : Interc
         }
         catch (AggregateConcurrencyException ex)
         {
-            var errorInfo = new ErrorInfo
-            {
-                Reason = "AGGREGATE_CONCURRENCY_CONFLICT",
-                Domain = context.Host
-            };
-            var status = new Google.Rpc.Status
-            {
-                Code = (int)StatusCode.Aborted,
-                Message = ex.Message,
-                Details = { Google.Protobuf.WellKnownTypes.Any.Pack(errorInfo) }
-            };
+            var status = GetConcurrencyStatus(context, ex);
             logger.LogError(ex, "Concurrency conflict, detail: {Detail}.", ex.Detail);
             
             throw status.ToRpcException();
@@ -75,5 +50,44 @@ public class ExceptionInterceptor(ILogger<ExceptionInterceptor> logger) : Interc
             logger.LogError(ex, "Unhandled exception in {Method}.", context.Method);
             throw new RpcException(new Status(StatusCode.Internal, "Internal server error."));
         }
+    }
+
+    private static Google.Rpc.Status GetValidationStatus(ValidationException ex)
+    {
+        var violations = ex.Errors.Select(validationError => new BadRequest.Types.FieldViolation
+        {
+            Field = validationError.PropertyName,
+            Description = validationError.ErrorMessage
+        });
+        
+        var badRequest = new BadRequest
+        {
+            FieldViolations = { violations }
+        };
+        
+        var status = new Google.Rpc.Status
+        {
+            Code = (int)StatusCode.InvalidArgument,
+            Message = "Validation failed.",
+            Details = { Google.Protobuf.WellKnownTypes.Any.Pack(badRequest) }
+        };
+        return status;
+    }
+    
+    private static Google.Rpc.Status GetConcurrencyStatus(ServerCallContext context,
+        AggregateConcurrencyException ex)
+    {
+        var errorInfo = new ErrorInfo
+        {
+            Reason = "AGGREGATE_CONCURRENCY_CONFLICT",
+            Domain = context.Host
+        };
+        var status = new Google.Rpc.Status
+        {
+            Code = (int)StatusCode.Aborted,
+            Message = ex.Message,
+            Details = { Google.Protobuf.WellKnownTypes.Any.Pack(errorInfo) }
+        };
+        return status;
     }
 }
